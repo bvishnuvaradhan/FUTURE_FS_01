@@ -58,7 +58,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const project = await prisma.project.findUnique({
-      where: { id: parseInt(req.params.id) }
+      where: { id: req.params.id }
     });
 
     if (!project) {
@@ -108,7 +108,7 @@ router.post('/', auth, async (req, res) => {
 // @access  Private
 router.put('/:id', auth, async (req, res) => {
   try {
-    const id = parseInt(req.params.id);
+    const id = req.params.id;
     const validation = projectSchema.safeParse(req.body);
     if (!validation.success) {
       return res.status(400).json({ errors: validation.error.format() });
@@ -146,7 +146,7 @@ router.put('/:id', auth, async (req, res) => {
 // @access  Private
 router.delete('/:id', auth, async (req, res) => {
   try {
-    const id = parseInt(req.params.id);
+    const id = req.params.id;
     const project = await prisma.project.findUnique({ where: { id } });
     if (!project) {
       return res.status(404).json({ message: 'Project not found' });
@@ -165,7 +165,7 @@ router.delete('/:id', auth, async (req, res) => {
 // @access  Public
 router.post('/:id/click', async (req, res) => {
   try {
-    const id = parseInt(req.params.id);
+    const id = req.params.id;
     const project = await prisma.project.findUnique({ where: { id } });
     if (!project) {
       return res.status(404).json({ message: 'Project not found' });

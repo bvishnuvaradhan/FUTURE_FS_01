@@ -1,5 +1,5 @@
 datasource db {
-  provider = "sqlite"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
@@ -8,13 +8,13 @@ generator client {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
   username String @unique
   password String
 }
 
 model Project {
-  id           Int      @id @default(autoincrement())
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
   title        String
   description  String
   technologies String   // Comma-separated list of technologies
@@ -27,14 +27,14 @@ model Project {
 }
 
 model Skill {
-  id          Int    @id @default(autoincrement())
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   category    String // e.g., "Frontend", "Backend", "AI/ML", "Programming Languages"
   proficiency Int    // 0-100 percentage
 }
 
 model Experience {
-  id          Int       @id @default(autoincrement())
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
   company     String
   role        String
   startDate   DateTime
@@ -43,7 +43,7 @@ model Experience {
 }
 
 model Education {
-  id          Int      @id @default(autoincrement())
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
   degree      String
   institution String
   period      String
@@ -51,21 +51,21 @@ model Education {
 }
 
 model Certification {
-  id     Int     @id @default(autoincrement())
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
   title  String
   issuer String
   link   String
 }
 
 model Achievement {
-  id          Int     @id @default(autoincrement())
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   description String
   link        String?
 }
 
 model Message {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   email     String
   subject   String
@@ -75,7 +75,7 @@ model Message {
 }
 
 model Post {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   title     String
   content   String
   slug      String   @unique
@@ -84,7 +84,7 @@ model Post {
 }
 
 model Analytics {
-  id    Int    @id @default(autoincrement())
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
   key   String @unique // "visitors", "resume_downloads"
   count Int    @default(0)
 }
