@@ -112,6 +112,9 @@ router.post('/login', async (req, res) => {
 // @access  Private
 router.get('/me', auth, async (req, res) => {
   try {
+    if (typeof req.user.id !== 'string') {
+      return res.status(401).json({ message: 'Invalid token session' });
+    }
     const user = await prisma.user.findUnique({
       where: { id: req.user.id },
       select: { id: true, username: true }
