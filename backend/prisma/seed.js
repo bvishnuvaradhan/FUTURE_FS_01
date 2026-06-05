@@ -98,7 +98,7 @@ async function main() {
       technologies: 'Python, FastAPI, MongoDB, React, WebSockets, Machine Learning, Anomaly Detection',
       githubLink: 'https://github.com/bvishnuvaradhan/CipherNexus',
       liveLink: 'https://cipher-nexus-zeta.vercel.app',
-      imageUrl: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80',
+      imageUrl: '/cybernexus.png',
       featured: true,
       clicks: 120
     },
