@@ -70,7 +70,13 @@ async function main() {
         codeforces: 'codeforces_username',
         codechef: 'codechef_username',
         leetcode: 'leetcode_username',
-        resumeUrl: 'Resume.pdf'
+        resumeUrl: 'Resume.pdf',
+        cgpa: '9.48',
+        projectsCount: '10+',
+        leetcodeSolved: '450+',
+        codechefRating: '1610',
+        codechefStars: '3 ★',
+        codechefDiv: 'Div 2'
       },
       skills: [
         { name: 'JavaScript', category: 'Programming Languages', proficiency: 90 },

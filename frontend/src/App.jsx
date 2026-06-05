@@ -38,7 +38,13 @@ export default function App() {
     codeforces: 'codeforces_username',
     codechef: 'codechef_username',
     leetcode: 'leetcode_username',
-    resumeUrl: 'Resume.pdf'
+    resumeUrl: 'Resume.pdf',
+    cgpa: '9.48',
+    projectsCount: '10+',
+    leetcodeSolved: '450+',
+    codechefRating: '1610',
+    codechefStars: '3 ★',
+    codechefDiv: 'Div 2'
   });
 
   // GitHub, LeetCode & Codeforces Stats
@@ -273,15 +279,17 @@ export default function App() {
               {/* Highlighting Stats Cards */}
               <div className="about-stats">
                 <div className="stat-item glass">
-                  <div className="stat-number">9.48</div>
+                  <div className="stat-number">{profile.cgpa || '9.48'}</div>
                   <div className="stat-label">B.Tech CGPA</div>
                 </div>
                 <div className="stat-item glass">
-                  <div className="stat-number">10+</div>
+                  <div className="stat-number">{profile.projectsCount || '10+'}</div>
                   <div className="stat-label">Projects Built</div>
                 </div>
                 <div className="stat-item glass">
-                  <div className="stat-number">450+</div>
+                  <div className="stat-number">
+                    {(!leetcodeError && leetcodeStats) ? leetcodeStats.solved.All : (profile.leetcodeSolved || '450+')}
+                  </div>
                   <div className="stat-label">LeetCode Solved</div>
                 </div>
               </div>
@@ -378,7 +386,7 @@ export default function App() {
                   <div className="stats-grid">
                     <div className="stat-box">
                       <div className="stat-box-title">Solved</div>
-                      <div className="stat-box-value">450+</div>
+                      <div className="stat-box-value">{profile.leetcodeSolved || '450+'}</div>
                     </div>
                     <div className="stat-box">
                       <div className="stat-box-title">Easy/Med/Hard</div>
@@ -456,16 +464,18 @@ export default function App() {
                 <div className="stats-grid">
                   <div className="stat-box">
                     <div className="stat-box-title">Rating</div>
-                    <div className="stat-box-value">1610</div>
+                    <div className="stat-box-value">{profile.codechefRating || '1610'}</div>
                   </div>
                   <div className="stat-box">
                     <div className="stat-box-title">Division</div>
-                    <div className="stat-box-value" style={{ fontSize: '1.1rem', marginTop: '6px' }}>Div 2</div>
+                    <div className="stat-box-value" style={{ fontSize: '1.1rem', marginTop: '6px' }}>
+                      {profile.codechefDiv || 'Div 2'}
+                    </div>
                   </div>
                   <div className="stat-box">
                     <div className="stat-box-title">Stars</div>
                     <div className="stat-box-value" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '3px' }}>
-                      <Star size={16} style={{ color: '#fbbf24', fill: '#fbbf24' }} /> 3 ★
+                      <Star size={16} style={{ color: '#fbbf24', fill: '#fbbf24' }} /> {profile.codechefStars || '3 ★'}
                     </div>
                   </div>
                 </div>

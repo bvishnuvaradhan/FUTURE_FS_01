@@ -24,7 +24,13 @@ router.get('/', async (req, res) => {
         codeforces: 'codeforces_username',
         codechef: 'codechef_username',
         leetcode: 'leetcode_username',
-        resumeUrl: 'Resume.pdf'
+        resumeUrl: 'Resume.pdf',
+        cgpa: '9.48',
+        projectsCount: '10+',
+        leetcodeSolved: '450+',
+        codechefRating: '1610',
+        codechefStars: '3 ★',
+        codechefDiv: 'Div 2'
       };
     }
     
@@ -50,7 +56,13 @@ router.put('/', auth, async (req, res) => {
       codeforces, 
       codechef, 
       leetcode, 
-      resumeUrl 
+      resumeUrl,
+      cgpa,
+      projectsCount,
+      leetcodeSolved,
+      codechefRating,
+      codechefStars,
+      codechefDiv
     } = req.body;
 
     let profile = await prisma.profile.findFirst();
@@ -69,7 +81,13 @@ router.put('/', auth, async (req, res) => {
           codeforces: codeforces || '',
           codechef: codechef || '',
           leetcode: leetcode || '',
-          resumeUrl: resumeUrl || ''
+          resumeUrl: resumeUrl || '',
+          cgpa: cgpa || '',
+          projectsCount: projectsCount || '',
+          leetcodeSolved: leetcodeSolved || '',
+          codechefRating: codechefRating || '',
+          codechefStars: codechefStars || '',
+          codechefDiv: codechefDiv || ''
         }
       });
     } else {
@@ -85,7 +103,13 @@ router.put('/', auth, async (req, res) => {
           codeforces: codeforces || '',
           codechef: codechef || '',
           leetcode: leetcode || '',
-          resumeUrl: resumeUrl || ''
+          resumeUrl: resumeUrl || '',
+          cgpa: cgpa || '',
+          projectsCount: projectsCount || '',
+          leetcodeSolved: leetcodeSolved || '',
+          codechefRating: codechefRating || '',
+          codechefStars: codechefStars || '',
+          codechefDiv: codechefDiv || ''
         }
       });
     }

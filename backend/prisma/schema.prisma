@@ -25,6 +25,12 @@ model Profile {
   codechef        String?
   leetcode        String?
   resumeUrl       String?
+  cgpa            String?
+  projectsCount   String?
+  leetcodeSolved  String?
+  codechefRating  String?
+  codechefStars   String?
+  codechefDiv     String?
 }
 
 model Project {

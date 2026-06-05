@@ -952,6 +952,60 @@ export default function AdminDashboard({ isAdminLoggedIn, onLoginSuccess, onLogo
                   onChange={(e) => setProfile({ ...profile, codechef: e.target.value })} 
                 />
               </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <label style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>B.Tech CGPA</label>
+                <input 
+                  type="text" 
+                  className="admin-input" 
+                  value={profile.cgpa || ''} 
+                  onChange={(e) => setProfile({ ...profile, cgpa: e.target.value })} 
+                />
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <label style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Projects Built Count (e.g. 10+)</label>
+                <input 
+                  type="text" 
+                  className="admin-input" 
+                  value={profile.projectsCount || ''} 
+                  onChange={(e) => setProfile({ ...profile, projectsCount: e.target.value })} 
+                />
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <label style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>LeetCode Solved Fallback (e.g. 450+)</label>
+                <input 
+                  type="text" 
+                  className="admin-input" 
+                  value={profile.leetcodeSolved || ''} 
+                  onChange={(e) => setProfile({ ...profile, leetcodeSolved: e.target.value })} 
+                />
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <label style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>CodeChef Rating (e.g. 1610)</label>
+                <input 
+                  type="text" 
+                  className="admin-input" 
+                  value={profile.codechefRating || ''} 
+                  onChange={(e) => setProfile({ ...profile, codechefRating: e.target.value })} 
+                />
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <label style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>CodeChef Division (e.g. Div 2)</label>
+                <input 
+                  type="text" 
+                  className="admin-input" 
+                  value={profile.codechefDiv || ''} 
+                  onChange={(e) => setProfile({ ...profile, codechefDiv: e.target.value })} 
+                />
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <label style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>CodeChef Stars (e.g. 3 ★)</label>
+                <input 
+                  type="text" 
+                  className="admin-input" 
+                  value={profile.codechefStars || ''} 
+                  onChange={(e) => setProfile({ ...profile, codechefStars: e.target.value })} 
+                />
+              </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', gridColumn: 'span 2' }}>
                 <label style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Resume File Name (PDF in public folder)</label>
                 <input 
