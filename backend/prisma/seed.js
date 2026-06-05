@@ -241,7 +241,7 @@ async function main() {
     {
       title: 'MongoDB Certified Associate Developer',
       issuer: 'MongoDB',
-      link: 'https://credentials.mongodb.com'
+      link: 'https://www.credly.com/earner/earned/badge/4d1a9b43-727c-4da2-8c4d-839c1efb9254'
     },
     {
       title: 'Advanced Automation Professional',
