@@ -82,33 +82,54 @@ export default function App() {
     }
   };
 
-  // Fetch GitHub Stats
+  // Fetch GitHub Stats for both accounts and combine them
   const fetchGithubStats = async () => {
     try {
-      // Query public GitHub API
-      const username = 'bvishnuvaradhan';
-      const userRes = await fetch(`https://api.github.com/users/${username}`);
-      if (userRes.ok) {
-        const userData = await userRes.json();
-        
-        // Fetch repositories to calculate stars
-        const reposRes = await fetch(`https://api.github.com/users/${username}/repos?per_page=100`);
-        let starCount = 0;
-        if (reposRes.ok) {
-          const reposData = await reposRes.json();
-          starCount = reposData.reduce((sum, repo) => sum + repo.stargazers_count, 0);
-        }
+      const user1 = 'bvishnuvaradhan';
+      const user2 = 'Vishnuvaradhan142';
 
-        setGithubStats({
-          repos: userData.public_repos || 12, // fallback
-          stars: starCount || 5, // fallback
-          followers: userData.followers || 15
-        });
+      let repos = 0;
+      let stars = 0;
+      let followers = 0;
+
+      // Account 1 (bvishnuvaradhan)
+      const res1 = await fetch(`https://api.github.com/users/${user1}`);
+      if (res1.ok) {
+        const data1 = await res1.json();
+        repos += data1.public_repos || 0;
+        followers += data1.followers || 0;
+        
+        const reposRes1 = await fetch(`https://api.github.com/users/${user1}/repos?per_page=100`);
+        if (reposRes1.ok) {
+          const reposData1 = await reposRes1.json();
+          stars += reposData1.reduce((sum, repo) => sum + repo.stargazers_count, 0);
+        }
+      }
+
+      // Account 2 (Vishnuvaradhan142)
+      const res2 = await fetch(`https://api.github.com/users/${user2}`);
+      if (res2.ok) {
+        const data2 = await res2.json();
+        repos += data2.public_repos || 0;
+        followers += data2.followers || 0;
+        
+        const reposRes2 = await fetch(`https://api.github.com/users/${user2}/repos?per_page=100`);
+        if (reposRes2.ok) {
+          const reposData2 = await reposRes2.json();
+          stars += reposData2.reduce((sum, repo) => sum + repo.stargazers_count, 0);
+        }
+      }
+
+      // If both API calls failed or returned zero, set reasonable fallback mockup
+      if (repos === 0 && followers === 0) {
+        setGithubStats({ repos: 22, stars: 10, followers: 32 });
+      } else {
+        setGithubStats({ repos, stars, followers });
       }
     } catch (err) {
       console.error('GitHub stats fetch error, using mockup data:', err);
       // set mockup data for demo purposes
-      setGithubStats({ repos: 15, stars: 8, followers: 24 });
+      setGithubStats({ repos: 22, stars: 10, followers: 32 });
     }
   };
 
