@@ -607,6 +607,7 @@ section {
   display: flex;
   flex-direction: column;
   height: 100%;
+  white-space: normal;
 }
 
 .project-image-wrapper {
@@ -649,11 +650,15 @@ section {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  white-space: normal;
 }
 
 .project-title {
   font-size: 1.4rem;
   margin-bottom: 10px;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .project-desc {
@@ -661,6 +666,10 @@ section {
   color: var(--text-secondary);
   margin-bottom: 20px;
   flex-grow: 1;
+  white-space: normal;
+  line-height: 1.6;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .project-tags {
