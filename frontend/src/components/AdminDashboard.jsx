@@ -413,7 +413,7 @@ export default function AdminDashboard({ isAdminLoggedIn, onLoginSuccess, onLogo
               {window.location.hostname.includes('vercel.app') || window.location.hostname === 'bvishnuvaradhan.vercel.app' ? (
                 <div 
                   className="metric-card glass clickable-metric" 
-                  onClick={() => window.open('https://vercel.com/boga-vishnuvaradhans-projects/personal-portfolio-website/analytics', '_blank', 'noopener,noreferrer')}
+                  onClick={() => window.open(import.meta.env.VITE_VERCEL_ANALYTICS_URL || 'https://vercel.com/dashboard', '_blank', 'noopener,noreferrer')}
                   title="Click to view live Vercel Web Analytics"
                 >
                   <div className="metric-info">
