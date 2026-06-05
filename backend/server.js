@@ -41,8 +41,11 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: err.message || 'Something went wrong!' });
 });
 
-const PORT = process.env.PORT || 5000;
+if (!process.env.VERCEL) {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`Server started on port ${PORT}`);
+  });
+}
 
-app.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`);
-});
+module.exports = app;
