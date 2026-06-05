@@ -7,9 +7,11 @@ export default function Navbar({
   isDark, 
   toggleTheme, 
   isAdminLoggedIn, 
-  onLogout 
+  onLogout,
+  profile
 }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const brandName = profile?.name ? `${profile.name.split(' ')[0]}.Dev` : 'Portfolio.Dev';
 
   const handleNavClick = (sectionId) => {
     if (window.location.hash === `#${sectionId}`) {
@@ -37,7 +39,7 @@ export default function Navbar({
   return (
     <nav className="navbar glass">
       <div className="nav-logo gradient-text" onClick={() => navigateTo('home')}>
-        {import.meta.env.VITE_BRAND_NAME || 'Portfolio.Dev'}
+        {brandName}
       </div>
 
       {/* Nav Links */}

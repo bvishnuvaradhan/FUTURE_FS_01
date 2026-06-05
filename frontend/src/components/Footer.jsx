@@ -1,13 +1,13 @@
 import React from 'react';
 import { Github, Linkedin, Mail } from 'lucide-react';
 
-export default function Footer() {
-  const brandName = import.meta.env.VITE_BRAND_NAME || 'Portfolio.Dev';
-  const userName = import.meta.env.VITE_USER_NAME || 'Your Name';
-  const email = import.meta.env.VITE_USER_EMAIL || 'contact@example.com';
-  const githubPrimary = import.meta.env.VITE_GITHUB_PRIMARY;
-  const githubSecondary = import.meta.env.VITE_GITHUB_SECONDARY;
-  const linkedin = import.meta.env.VITE_LINKEDIN;
+export default function Footer({ profile }) {
+  const brandName = profile?.name ? `${profile.name.split(' ')[0]}.Dev` : 'Portfolio.Dev';
+  const userName = profile?.name || 'Your Name';
+  const email = profile?.email || 'contact@example.com';
+  const githubPrimary = profile?.githubPrimary;
+  const githubSecondary = profile?.githubSecondary;
+  const linkedin = profile?.linkedin;
 
   return (
     <footer className="footer glass">

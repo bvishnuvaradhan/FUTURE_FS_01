@@ -13,6 +13,20 @@ model User {
   password String
 }
 
+model Profile {
+  id              String  @id @default(auto()) @map("_id") @db.ObjectId
+  name            String
+  email           String
+  bio             String?
+  githubPrimary   String?
+  githubSecondary String?
+  linkedin        String?
+  codeforces      String?
+  codechef        String?
+  leetcode        String?
+  resumeUrl       String?
+}
+
 model Project {
   id           String   @id @default(auto()) @map("_id") @db.ObjectId
   title        String

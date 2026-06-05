@@ -28,6 +28,7 @@ app.use('/api/blog', require('./routes/blog'));
 app.use('/api/analytics', require('./routes/analytics'));
 app.use('/api/uploads', require('./routes/uploads'));
 app.use('/api/leetcode', require('./routes/leetcode'));
+app.use('/api/profile', require('./routes/profile'));
 
 // Default API route test
 app.get('/api', (req, res) => {

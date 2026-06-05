@@ -9,6 +9,7 @@ async function main() {
   console.log('Clearing database tables...');
   
   // Clear tables to avoid duplicates
+  await prisma.profile.deleteMany({});
   await prisma.project.deleteMany({});
   await prisma.skill.deleteMany({});
   await prisma.experience.deleteMany({});
@@ -59,6 +60,18 @@ async function main() {
   } else {
     console.log('No seedData.json found. Seeding generic template data...');
     data = {
+      profile: {
+        name: 'Your Name',
+        email: 'contact@example.com',
+        bio: 'A passionate developer.',
+        githubPrimary: 'github_username_1',
+        githubSecondary: '',
+        linkedin: 'linkedin_username',
+        codeforces: 'codeforces_username',
+        codechef: 'codechef_username',
+        leetcode: 'leetcode_username',
+        resumeUrl: 'Resume.pdf'
+      },
       skills: [
         { name: 'JavaScript', category: 'Programming Languages', proficiency: 90 },
         { name: 'Node.js', category: 'Backend & Systems', proficiency: 85 },
@@ -125,6 +138,12 @@ async function main() {
         published: true
       }
     };
+  }
+
+  // Seed Profile
+  if (data.profile) {
+    await prisma.profile.create({ data: data.profile });
+    console.log('Seeded profile details.');
   }
 
   // 3. Create Skills

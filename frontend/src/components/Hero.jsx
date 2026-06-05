@@ -3,13 +3,13 @@ import { motion } from 'framer-motion';
 import { Download, ArrowRight, Github, Linkedin, Mail } from 'lucide-react';
 import { api } from '../utils/api';
 
-export default function Hero() {
-  const userName = import.meta.env.VITE_USER_NAME || 'Your Name';
-  const email = import.meta.env.VITE_USER_EMAIL || 'contact@example.com';
-  const githubPrimary = import.meta.env.VITE_GITHUB_PRIMARY;
-  const githubSecondary = import.meta.env.VITE_GITHUB_SECONDARY;
-  const linkedin = import.meta.env.VITE_LINKEDIN;
-  const resumeFile = import.meta.env.VITE_RESUME_FILE || 'Resume.pdf';
+export default function Hero({ profile }) {
+  const userName = profile?.name || 'Your Name';
+  const email = profile?.email || 'contact@example.com';
+  const githubPrimary = profile?.githubPrimary;
+  const githubSecondary = profile?.githubSecondary;
+  const linkedin = profile?.linkedin;
+  const resumeFile = profile?.resumeUrl || 'Resume.pdf';
 
   // Calculate initials dynamically
   const initials = userName

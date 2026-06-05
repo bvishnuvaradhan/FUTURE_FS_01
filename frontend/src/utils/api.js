@@ -203,6 +203,15 @@ export const api = {
     getStats: (username) => request(`/leetcode/${username}`)
   },
 
+  // Profile API
+  profile: {
+    get: () => request('/profile'),
+    update: (data) => request('/profile', {
+      method: 'PUT',
+      body: JSON.stringify(data)
+    })
+  },
+
   // Upload API
   uploads: {
     uploadImage: async (file) => {

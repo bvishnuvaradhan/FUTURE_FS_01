@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Mail, MapPin, Send, CheckCircle2, AlertCircle } from 'lucide-react';
 import { api } from '../utils/api';
 
-export default function Contact() {
+export default function Contact({ profile }) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -83,7 +83,7 @@ export default function Contact() {
             </div>
             <div>
               <span className="contact-label">Email Me</span>
-              <div className="contact-value">{import.meta.env.VITE_USER_EMAIL || 'contact@example.com'}</div>
+              <div className="contact-value">{profile?.email || 'contact@example.com'}</div>
             </div>
           </div>
 

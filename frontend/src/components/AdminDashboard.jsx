@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { 
   BarChart3, FolderGit, Cpu, Calendar, Award, 
-  BookOpen, Mail, LogOut, Plus, Trash2, Edit, Check, Eye 
+  BookOpen, Mail, LogOut, Plus, Trash2, Edit, Check, Eye, User 
 } from 'lucide-react';
 import { api } from '../utils/api';
 
-export default function AdminDashboard({ isAdminLoggedIn, onLoginSuccess, onLogout }) {
+export default function AdminDashboard({ isAdminLoggedIn, onLoginSuccess, onLogout, profile, setProfile }) {
   // Login Form State
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -44,6 +44,10 @@ export default function AdminDashboard({ isAdminLoggedIn, onLoginSuccess, onLogo
   // Image Uploading State
   const [uploadingImage, setUploadingImage] = useState(false);
   const [uploadError, setUploadError] = useState('');
+
+  // Profile Settings States
+  const [profileSaving, setProfileSaving] = useState(false);
+  const [profileSuccess, setProfileSuccess] = useState(false);
 
   // Fetch all dashboard content
   const fetchDashboardData = async () => {
@@ -102,6 +106,24 @@ export default function AdminDashboard({ isAdminLoggedIn, onLoginSuccess, onLogo
       setLoginError(err.message || 'Invalid username or password');
     } finally {
       setLoginLoading(false);
+    }
+  };
+
+  // Handle Profile Settings Submit
+  const handleProfileSubmit = async (e) => {
+    e.preventDefault();
+    setProfileSaving(true);
+    setProfileSuccess(false);
+    try {
+      const updated = await api.profile.update(profile);
+      setProfile(updated);
+      setProfileSuccess(true);
+      setTimeout(() => setProfileSuccess(false), 3000);
+    } catch (err) {
+      console.error('Error updating profile settings:', err);
+      alert(err.message || 'Failed to update profile settings');
+    } finally {
+      setProfileSaving(false);
     }
   };
 
@@ -364,6 +386,9 @@ export default function AdminDashboard({ isAdminLoggedIn, onLoginSuccess, onLogo
           </div>
           <div className={`admin-nav-item ${activeTab === 'messages' ? 'active' : ''}`} onClick={() => setActiveTab('messages')}>
             <Mail size={18} /> Messages
+          </div>
+          <div className={`admin-nav-item ${activeTab === 'profile' ? 'active' : ''}`} onClick={() => setActiveTab('profile')}>
+            <User size={18} /> Profile Settings
           </div>
         </div>
 
@@ -831,6 +856,122 @@ export default function AdminDashboard({ isAdminLoggedIn, onLoginSuccess, onLogo
                 </tbody>
               </table>
             </div>
+          </div>
+        )}
+
+        {/* TAB 8: PROFILE SETTINGS */}
+        {activeTab === 'profile' && profile && (
+          <div className="glass" style={{ padding: '25px' }}>
+            <h3>Profile Settings</h3>
+            {profileSuccess && (
+              <div style={{ padding: '12px', background: 'rgba(16, 185, 129, 0.1)', border: '1px solid #10b981', color: '#10b981', borderRadius: '6px', margin: '20px 0', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Check size={18} /> Profile updated successfully!
+              </div>
+            )}
+            <form onSubmit={handleProfileSubmit} style={{ marginTop: '20px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <label style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Full Name</label>
+                <input 
+                  type="text" 
+                  className="admin-input" 
+                  value={profile.name || ''} 
+                  onChange={(e) => setProfile({ ...profile, name: e.target.value })} 
+                  required 
+                />
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <label style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Email Address</label>
+                <input 
+                  type="email" 
+                  className="admin-input" 
+                  value={profile.email || ''} 
+                  onChange={(e) => setProfile({ ...profile, email: e.target.value })} 
+                  required 
+                />
+              </div>
+              <div style={{ gridColumn: 'span 2', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <label style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Bio / Description</label>
+                <textarea 
+                  rows={4}
+                  className="admin-input" 
+                  value={profile.bio || ''} 
+                  onChange={(e) => setProfile({ ...profile, bio: e.target.value })} 
+                />
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <label style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Primary GitHub Username</label>
+                <input 
+                  type="text" 
+                  className="admin-input" 
+                  value={profile.githubPrimary || ''} 
+                  onChange={(e) => setProfile({ ...profile, githubPrimary: e.target.value })} 
+                />
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <label style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Secondary GitHub Username</label>
+                <input 
+                  type="text" 
+                  className="admin-input" 
+                  value={profile.githubSecondary || ''} 
+                  onChange={(e) => setProfile({ ...profile, githubSecondary: e.target.value })} 
+                />
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <label style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>LinkedIn Profile Slug</label>
+                <input 
+                  type="text" 
+                  className="admin-input" 
+                  value={profile.linkedin || ''} 
+                  onChange={(e) => setProfile({ ...profile, linkedin: e.target.value })} 
+                />
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <label style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>LeetCode Username</label>
+                <input 
+                  type="text" 
+                  className="admin-input" 
+                  value={profile.leetcode || ''} 
+                  onChange={(e) => setProfile({ ...profile, leetcode: e.target.value })} 
+                />
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <label style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Codeforces Handle</label>
+                <input 
+                  type="text" 
+                  className="admin-input" 
+                  value={profile.codeforces || ''} 
+                  onChange={(e) => setProfile({ ...profile, codeforces: e.target.value })} 
+                />
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <label style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>CodeChef Handle</label>
+                <input 
+                  type="text" 
+                  className="admin-input" 
+                  value={profile.codechef || ''} 
+                  onChange={(e) => setProfile({ ...profile, codechef: e.target.value })} 
+                />
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', gridColumn: 'span 2' }}>
+                <label style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Resume File Name (PDF in public folder)</label>
+                <input 
+                  type="text" 
+                  className="admin-input" 
+                  value={profile.resumeUrl || ''} 
+                  onChange={(e) => setProfile({ ...profile, resumeUrl: e.target.value })} 
+                />
+              </div>
+              <div style={{ gridColumn: 'span 2', marginTop: '10px' }}>
+                <button 
+                  type="submit" 
+                  className="btn btn-primary" 
+                  disabled={profileSaving}
+                  style={{ width: '150px' }}
+                >
+                  {profileSaving ? 'Saving...' : 'Save Settings'}
+                </button>
+              </div>
+            </form>
           </div>
         )}
 

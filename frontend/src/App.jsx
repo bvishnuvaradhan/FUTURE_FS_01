@@ -26,7 +26,19 @@ export default function App() {
   const [education, setEducation] = useState([]);
   const [certifications, setCertifications] = useState([]);
   const [achievements, setAchievements] = useState([]);
-  const [posts, setPosts] = useState([]);
+  // Profile Data State
+  const [profile, setProfile] = useState({
+    name: 'Your Name',
+    email: 'contact@example.com',
+    bio: 'A passionate developer.',
+    githubPrimary: 'github_username_1',
+    githubSecondary: '',
+    linkedin: 'linkedin_username',
+    codeforces: 'codeforces_username',
+    codechef: 'codechef_username',
+    leetcode: 'leetcode_username',
+    resumeUrl: 'Resume.pdf'
+  });
 
   // GitHub, LeetCode & Codeforces Stats
   const [githubStats, setGithubStats] = useState({ repos: 0, stars: 0, followers: 0 });
@@ -57,6 +69,15 @@ export default function App() {
   // Fetch Public Portfolio Data
   const fetchPortfolioData = async () => {
     try {
+      // Fetch Profile Details
+      let prof = null;
+      try {
+        prof = await api.profile.get();
+        if (prof) setProfile(prof);
+      } catch (err) {
+        console.error('Error fetching profile:', err);
+      }
+
       const pData = await api.projects.getAll();
       setProjects(pData);
 
@@ -77,16 +98,22 @@ export default function App() {
 
       const blogData = await api.blog.getAll();
       setPosts(blogData);
+
+      // Trigger stats fetches using profile keys
+      const p = prof || { githubPrimary: '', githubSecondary: '', leetcode: '', codeforces: '' };
+      fetchGithubStats(p.githubPrimary, p.githubSecondary);
+      fetchLeetcodeStats(p.leetcode);
+      fetchCodeforcesStats(p.codeforces);
     } catch (err) {
       console.error('Error fetching public portfolio data:', err);
     }
   };
 
   // Fetch GitHub Stats for both accounts and combine them
-  const fetchGithubStats = async () => {
+  const fetchGithubStats = async (githubPrimary, githubSecondary) => {
     try {
-      const user1 = import.meta.env.VITE_GITHUB_PRIMARY || 'github_user_1';
-      const user2 = import.meta.env.VITE_GITHUB_SECONDARY || '';
+      const user1 = githubPrimary || 'github_user_1';
+      const user2 = githubSecondary || '';
 
       let repos = 0;
       let stars = 0;
@@ -135,9 +162,9 @@ export default function App() {
   };
 
   // Fetch LeetCode Stats via backend GraphQL Proxy
-  const fetchLeetcodeStats = async () => {
+  const fetchLeetcodeStats = async (leetcodeHandle) => {
     try {
-      const handle = import.meta.env.VITE_LEETCODE || 'leetcode_handle';
+      const handle = leetcodeHandle || 'leetcode_handle';
       // Query our backend proxy with user's actual username
       const stats = await api.leetcode.getStats(handle);
       setLeetcodeStats(stats);
@@ -149,9 +176,9 @@ export default function App() {
   };
 
   // Fetch Codeforces Stats
-  const fetchCodeforcesStats = async () => {
+  const fetchCodeforcesStats = async (codeforcesHandle) => {
     try {
-      const handle = import.meta.env.VITE_CODEFORCES || 'codeforces_handle';
+      const handle = codeforcesHandle || 'codeforces_handle';
       const res = await fetch(`https://codeforces.com/api/user.info?handles=${handle}`);
       if (res.ok) {
         const data = await res.json();
@@ -174,11 +201,6 @@ export default function App() {
     
     // 3. Get portfolio database contents
     fetchPortfolioData();
-
-    // 4. Get integration stats
-    fetchGithubStats();
-    fetchLeetcodeStats();
-    fetchCodeforcesStats();
   }, []);
 
   // Listen to hash changes for routing
@@ -229,23 +251,21 @@ export default function App() {
         toggleTheme={toggleTheme}
         isAdminLoggedIn={isAdminLoggedIn}
         onLogout={handleLogout}
+        profile={profile}
       />
 
       {currentView === 'home' ? (
         /* HOME PORTFOLIO VIEW */
         <div>
-          <Hero />
+          <Hero profile={profile} />
           
           {/* About Me Details Section */}
           <section id="about">
             <h2 className="section-title">About Me</h2>
             <div className="about-grid">
               <div className="about-details">
-                <p>
-                  I am a Computer Science undergraduate at Koneru Lakshmaiah Education Foundation (KL University), Hyderabad, with a strong foundation in data structures, systems, and backend development.
-                </p>
-                <p>
-                  I specialize in building real-time, AI-driven, and distributed applications, including multi-agent SOC architectures, LLM fact-checking systems, and schema generators. I am currently seeking a Summer 2026 internship in software engineering or quantitative technology roles where I can apply my experience in Python, FastAPI, React, and robust database design.
+                <p style={{ whiteSpace: 'pre-wrap' }}>
+                  {profile.bio || "Welcome to my portfolio website. Here you can see my projects, skills, education, and credentials."}
                 </p>
               </div>
 
@@ -288,16 +308,16 @@ export default function App() {
                     <h3 style={{ fontSize: '1.25rem' }}>GitHub</h3>
                   </div>
                   <div style={{ display: 'flex', gap: '8px' }}>
-                    {import.meta.env.VITE_GITHUB_PRIMARY && (
-                      <a href={`https://github.com/${import.meta.env.VITE_GITHUB_PRIMARY}`} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.85rem', color: 'var(--accent-primary)', fontWeight: 600 }} title="Primary GitHub">
-                        {import.meta.env.VITE_GITHUB_PRIMARY}
+                    {profile.githubPrimary && (
+                      <a href={`https://github.com/${profile.githubPrimary}`} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.85rem', color: 'var(--accent-primary)', fontWeight: 600 }} title="Primary GitHub">
+                        {profile.githubPrimary}
                       </a>
                     )}
-                    {import.meta.env.VITE_GITHUB_SECONDARY && (
+                    {profile.githubSecondary && (
                       <>
                         <span style={{ color: 'var(--text-secondary)' }}>|</span>
-                        <a href={`https://github.com/${import.meta.env.VITE_GITHUB_SECONDARY}`} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.85rem', color: 'var(--accent-primary)', fontWeight: 600 }} title="Secondary GitHub">
-                          {import.meta.env.VITE_GITHUB_SECONDARY}
+                        <a href={`https://github.com/${profile.githubSecondary}`} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.85rem', color: 'var(--accent-primary)', fontWeight: 600 }} title="Secondary GitHub">
+                          {profile.githubSecondary}
                         </a>
                       </>
                     )}
@@ -328,7 +348,7 @@ export default function App() {
                     <Code2 size={24} style={{ color: '#ffa116' }} />
                     <h3 style={{ fontSize: '1.25rem' }}>LeetCode</h3>
                   </div>
-                  <a href={`https://leetcode.com/u/${import.meta.env.VITE_LEETCODE || 'leetcode_handle'}/`} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.85rem', color: 'var(--accent-primary)', fontWeight: 600 }}>
+                  <a href={`https://leetcode.com/u/${profile.leetcode || 'leetcode_handle'}/`} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.85rem', color: 'var(--accent-primary)', fontWeight: 600 }}>
                     Profile
                   </a>
                 </div>
@@ -380,7 +400,7 @@ export default function App() {
                     <Activity size={24} style={{ color: '#3182ce' }} />
                     <h3 style={{ fontSize: '1.25rem' }}>Codeforces</h3>
                   </div>
-                  <a href={`https://codeforces.com/profile/${import.meta.env.VITE_CODEFORCES || 'codeforces_handle'}`} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.85rem', color: 'var(--accent-primary)', fontWeight: 600 }}>
+                  <a href={`https://codeforces.com/profile/${profile.codeforces || 'codeforces_handle'}`} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.85rem', color: 'var(--accent-primary)', fontWeight: 600 }}>
                     Profile
                   </a>
                 </div>
@@ -407,7 +427,7 @@ export default function App() {
                   <div className="stats-grid">
                     <div className="stat-box">
                       <div className="stat-box-title">User</div>
-                      <div className="stat-box-value" style={{ fontSize: '0.95rem', marginTop: '6px' }}>{import.meta.env.VITE_CODEFORCES || 'codeforces_handle'}</div>
+                      <div className="stat-box-value" style={{ fontSize: '0.95rem', marginTop: '6px' }}>{profile.codeforces || 'codeforces_handle'}</div>
                     </div>
                     <div className="stat-box">
                       <div className="stat-box-title">Rank</div>
@@ -428,7 +448,7 @@ export default function App() {
                     <Terminal size={24} style={{ color: '#a855f7' }} />
                     <h3 style={{ fontSize: '1.25rem' }}>CodeChef</h3>
                   </div>
-                  <a href={`https://www.codechef.com/users/${import.meta.env.VITE_CODECHEF || 'codechef_handle'}`} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.85rem', color: 'var(--accent-primary)', fontWeight: 600 }}>
+                  <a href={`https://www.codechef.com/users/${profile.codechef || 'codechef_handle'}`} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.85rem', color: 'var(--accent-primary)', fontWeight: 600 }}>
                     Profile
                   </a>
                 </div>
@@ -455,15 +475,15 @@ export default function App() {
 
           <Blog posts={posts} />
           
-          <Contact />
+          <Contact profile={profile} />
           
-          <Footer />
+          <Footer profile={profile} />
         </div>
       ) : currentView === 'projects' ? (
         /* ALL PROJECTS VIEW */
         <div style={{ marginTop: '70px', padding: '40px 5%' }}>
           <Projects projects={projects} setView={setView} viewMode="all" />
-          <Footer />
+          <Footer profile={profile} />
         </div>
       ) : (
         /* ADMIN DASHBOARD WORKSPACE VIEW */
@@ -471,6 +491,8 @@ export default function App() {
           isAdminLoggedIn={isAdminLoggedIn}
           onLoginSuccess={() => setIsAdminLoggedIn(true)}
           onLogout={handleLogout}
+          profile={profile}
+          setProfile={setProfile}
         />
       )}
     </div>
