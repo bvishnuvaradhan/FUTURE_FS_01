@@ -14,6 +14,7 @@ async function main() {
   await prisma.certification.deleteMany({});
   await prisma.achievement.deleteMany({});
   await prisma.post.deleteMany({});
+  await prisma.analytics.deleteMany({});
 
   console.log('Seeding database with Boga Vishnuvaradhan\'s real resume data...');
 
